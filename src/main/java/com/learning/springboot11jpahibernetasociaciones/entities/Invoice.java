@@ -20,5 +20,6 @@ public class Invoice {
     private Double total;
 
     @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
 }
