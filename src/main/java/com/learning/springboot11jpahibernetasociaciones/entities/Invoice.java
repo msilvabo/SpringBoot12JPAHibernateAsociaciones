@@ -16,4 +16,7 @@ public class Invoice {
     private Long id;
     private String description;
     private Double total;
+
+    @ManyToOne
+    private Client client;
 }
