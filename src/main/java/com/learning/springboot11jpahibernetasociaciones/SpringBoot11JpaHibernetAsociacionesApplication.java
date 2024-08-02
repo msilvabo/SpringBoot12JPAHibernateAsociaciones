@@ -29,7 +29,25 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        OneToManyFindById();
+        RemoveAddress();
+    }
+
+    @Transactional(readOnly = false)
+    public void RemoveAddress(){
+        Client client = Client.builder().name("Frank").lastname("Moras").build();
+        Address address1 = Address.builder().street("Vasco de Gama").number(85764).build();
+        Address address2 = Address.builder().street("Vergel").number(1814).build();
+        client.getAddresses().add(address1);
+        client.getAddresses().add(address2);
+        clientRepository.save(client);
+        System.out.println(client);
+
+        Optional<Client> optionalClient = clientRepository.findById(3L);
+        optionalClient.ifPresent(client1 -> {
+            client1.getAddresses().remove(address1);
+            clientRepository.save(client1);
+            System.out.println(client1);
+        });
     }
 
     @Transactional
