@@ -24,8 +24,14 @@ public class Client {
     private String name;
     private String lastname;
 
+//    @JoinColumn(name = "cliente_id")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "cliente_id")
+    @JoinTable(
+            name = "tbl_client_to_address",
+            joinColumns = @JoinColumn(name = "id_cliente"),
+            inverseJoinColumns = @JoinColumn(name = "id_direcciones"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
+
     private List<Address> addresses = new ArrayList<>();
 
     public List<Address> getAddresses() {
