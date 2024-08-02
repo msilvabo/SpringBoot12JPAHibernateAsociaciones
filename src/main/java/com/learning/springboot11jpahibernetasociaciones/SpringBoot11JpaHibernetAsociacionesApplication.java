@@ -11,6 +11,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -27,7 +29,20 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        OneToMany();
+        OneToManyFindById();
+    }
+
+    @Transactional
+    public void OneToManyFindById(){
+        Optional <Client> optionalClient = clientRepository.findById(2L);
+        optionalClient.ifPresent(client -> {
+            client = optionalClient.get();
+            Address address1 = Address.builder().street("Vasco de Gama").number(85764).build();
+            Address address2 = Address.builder().street("Vergel").number(1814).build();
+            client.setAddresses(Arrays.asList(address1,address2));
+            clientRepository.save(client);
+            System.out.println(client);
+        });
     }
 
     @Transactional

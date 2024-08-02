@@ -25,6 +25,7 @@ public class Client {
     private String lastname;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cliente_id")
     private List<Address> addresses = new ArrayList<>();
 
     public List<Address> getAddresses() {
