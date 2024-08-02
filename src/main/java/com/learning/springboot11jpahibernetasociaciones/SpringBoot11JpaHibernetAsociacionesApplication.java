@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
         manyToOneFindById();
     }
 
+    @Transactional()
     public void manyToOne(){
         Client client = Client.builder().name("Margarita").lastname("Rios").build();
         clientRepository.save(client);
@@ -37,6 +39,8 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
         Invoice invoiceDb = invoiceRepository.save(invoice);
         System.out.println(invoiceDb);
     }
+
+    @Transactional
     public void manyToOneFindById() {
         Optional<Client> optionalClient = clientRepository.findById(1L);
         Client client = null;
