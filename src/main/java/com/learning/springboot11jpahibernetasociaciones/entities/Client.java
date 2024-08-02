@@ -31,7 +31,6 @@ public class Client {
             joinColumns = @JoinColumn(name = "id_cliente"),
             inverseJoinColumns = @JoinColumn(name = "id_direcciones"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"id_direcciones"}))
-
     private List<Address> addresses = new ArrayList<>();
 
     public List<Address> getAddresses() {

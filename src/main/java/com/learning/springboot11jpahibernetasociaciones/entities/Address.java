@@ -28,6 +28,7 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
+        System.out.println(Objects.equals(id, address.id));
         return Objects.equals(id, address.id);
     }
 
@@ -35,4 +36,5 @@ public class Address {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
