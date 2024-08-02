@@ -1,5 +1,6 @@
 package com.learning.springboot11jpahibernetasociaciones;
 
+import com.learning.springboot11jpahibernetasociaciones.entities.Address;
 import com.learning.springboot11jpahibernetasociaciones.entities.Client;
 import com.learning.springboot11jpahibernetasociaciones.entities.Invoice;
 import com.learning.springboot11jpahibernetasociaciones.repositories.ClientRepository;
@@ -26,7 +27,18 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        manyToOneFindById();
+        OneToMany();
+    }
+
+    @Transactional
+    public void OneToMany(){
+        Client client = Client.builder().name("Frank").lastname("Moras").build();
+        Address address1 = Address.builder().street("Vasco de Gama").number(85764).build();
+        Address address2 = Address.builder().street("Vergel").number(1814).build();
+        client.getAddresses().add(address1);
+        client.getAddresses().add(address2);
+        clientRepository.save(client);
+        System.out.println(client);
     }
 
     @Transactional()

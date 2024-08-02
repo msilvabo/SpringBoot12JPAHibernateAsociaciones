@@ -2,6 +2,7 @@ package com.learning.springboot11jpahibernetasociaciones.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "adresses")
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Builder
 public class Address {
 
     @Id

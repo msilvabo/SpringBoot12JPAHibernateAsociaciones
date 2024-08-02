@@ -26,4 +26,15 @@ public class Client {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
+
+    public List<Address> getAddresses() {
+        if (addresses== null){
+            addresses = new ArrayList<>();
+        }
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
 }
