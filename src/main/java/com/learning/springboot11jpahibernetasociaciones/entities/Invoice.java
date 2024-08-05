@@ -22,4 +22,13 @@ public class Invoice {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", total=" + total +
+                '}';
+    }
 }

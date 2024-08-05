@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -29,7 +30,22 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        removeAddressFindById();
+        oneToManyBidirectional();
+    }
+
+    @Transactional
+    public void oneToManyBidirectional(){
+        Client client = Client.builder().name("Carlos").lastname("Arteaga").build();
+        Invoice invoice1 = Invoice.builder().description("Insumos Oficina").total(123d).build();
+        Invoice invoice2 = Invoice.builder().description("Material de Limpieza").total(75d).build();
+        List<Invoice> invoices = new ArrayList<>();
+        invoices.add(invoice1);
+        invoices.add(invoice2);
+        client.setInvoices(invoices);
+        invoice1.setClient(client);
+        invoice2.setClient(client);
+        clientRepository.save(client);
+        System.out.println(client);
     }
 
     @Transactional
