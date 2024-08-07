@@ -58,4 +58,8 @@ public class Client {
         this.addresses = addresses;
     }
 
+    public void removeInvoice(Invoice invoice) {
+        this.getInvoices().remove(invoice);
+        invoice.setClient(null);
+    }
 }

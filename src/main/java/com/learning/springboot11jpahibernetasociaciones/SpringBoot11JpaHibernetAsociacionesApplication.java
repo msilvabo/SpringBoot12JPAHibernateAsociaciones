@@ -30,7 +30,52 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        oneToManyBidirectional();
+        removeInvoiceBidirectional();
+    }
+
+    @Transactional
+    public void removeInvoiceBidirectional(){
+        Client client = Client.builder().name("Frank").lastname("Moras").build();
+        Invoice invoice1 = Invoice.builder().description("compras equimamiento").total(1230d).client(client).build();
+        Invoice invoice2 = Invoice.builder().description("compras mobiliario").total(5130d).client(client).build();
+        client.setInvoices(Arrays.asList(invoice1,invoice2));
+        clientRepository.save(client);
+        System.out.println(client);
+        Optional<Client> optionalClientDB = clientRepository.findById(3L);
+        optionalClientDB.ifPresent(clientDB -> {
+            Invoice invoice3 = Invoice.builder().description("compras equimamiento").total(1230d).client(clientDB).build();
+            invoice3.setId(1L);
+            Optional<Invoice> invoiceOptional = Optional.of(invoice3);
+            invoiceOptional.ifPresent(invoice -> {
+                clientDB.removeInvoice(invoice);
+                clientRepository.save(clientDB);
+                System.out.println(clientDB);
+            });
+        });
+    }
+    @Transactional
+    public void removeInvoiceBidirectionalFindById(){
+        Optional<Client> optionalClient = clientRepository.findById(1L);
+        optionalClient.ifPresent(client -> {
+            Invoice invoice1 = Invoice.builder().description("compras equimamiento").total(1230d).client(client).build();
+            Invoice invoice2 = Invoice.builder().description("compras mobiliario").total(5130d).client(client).build();
+            client.setInvoices(Arrays.asList(invoice1,invoice2));
+            clientRepository.save(client);
+            System.out.println(client);
+        });
+        Optional<Client> optionalClientDB = clientRepository.findById(1L);
+        optionalClientDB.ifPresent(client -> {
+            Invoice invoice3 = Invoice.builder().description("compras equimamiento").total(1230d).client(client).build();
+            invoice3.setId(1L);
+            Optional<Invoice> invoiceOptional = Optional.of(invoice3);
+            invoiceOptional.ifPresent(invoice -> {
+                client.removeInvoice(invoice);
+//                client.getInvoices().remove(invoice);
+//                invoice.setClient(null);
+                clientRepository.save(client);
+                System.out.println(client);
+            });
+        });
     }
 
     @Transactional
