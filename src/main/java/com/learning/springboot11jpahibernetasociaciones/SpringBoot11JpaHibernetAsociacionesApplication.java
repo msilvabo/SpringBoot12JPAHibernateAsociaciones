@@ -2,7 +2,9 @@ package com.learning.springboot11jpahibernetasociaciones;
 
 import com.learning.springboot11jpahibernetasociaciones.entities.Address;
 import com.learning.springboot11jpahibernetasociaciones.entities.Client;
+import com.learning.springboot11jpahibernetasociaciones.entities.ClientDetails;
 import com.learning.springboot11jpahibernetasociaciones.entities.Invoice;
+import com.learning.springboot11jpahibernetasociaciones.repositories.ClientDetailsRepository;
 import com.learning.springboot11jpahibernetasociaciones.repositories.ClientRepository;
 import com.learning.springboot11jpahibernetasociaciones.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +26,39 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private ClientDetailsRepository clientDetailsRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(SpringBoot11JpaHibernetAsociacionesApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        removeInvoiceBidirectional();
+        oneToOneFindById();
+    }
+
+    @Transactional
+    public void oneToOneFindById(){
+        ClientDetails clientDetails = ClientDetails.builder().premium(true).points(5000).build();
+        clientDetailsRepository.save(clientDetails);
+        Optional<Client> clientOptional = clientRepository.findById(2L);
+        clientOptional.ifPresent(client -> {
+            client.setClientDetails(clientDetails);
+            clientRepository.save(client);
+            System.out.println(client);
+        });
+    }
+
+    @Transactional
+    public void oneToOne(){
+        ClientDetails clientDetails = ClientDetails.builder().premium(true).points(5000).build();
+        clientDetailsRepository.save(clientDetails);
+        Client client = Client.builder().name("Elba").lastname("Pura").build();
+        client.setClientDetails(clientDetails);
+        clientRepository.save(client);
+
+        System.out.println(client);
     }
 
     @Transactional

@@ -36,6 +36,10 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private List<Invoice> invoices = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente_detalle")
+    private ClientDetails clientDetails;
+
     public List<Invoice> getInvoices() {
         if (invoices == null){
             invoices = new ArrayList<>();
