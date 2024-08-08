@@ -1,10 +1,7 @@
 package com.learning.springboot11jpahibernetasociaciones;
 
 import com.learning.springboot11jpahibernetasociaciones.entities.*;
-import com.learning.springboot11jpahibernetasociaciones.repositories.ClientDetailsRepository;
-import com.learning.springboot11jpahibernetasociaciones.repositories.ClientRepository;
-import com.learning.springboot11jpahibernetasociaciones.repositories.InvoiceRepository;
-import com.learning.springboot11jpahibernetasociaciones.repositories.StudentRepository;
+import com.learning.springboot11jpahibernetasociaciones.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,6 +21,8 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
     private ClientDetailsRepository clientDetailsRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBoot11JpaHibernetAsociacionesApplication.class, args);
@@ -31,10 +30,26 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        manyToMany();
+        manyToManyFind();
     }
 
     @Transactional
+    public void manyToManyFind(){
+        Optional<Student> studentOptional1 = studentRepository.findById(1L);
+        Optional<Student> studentOptional2 = studentRepository.findById(2L);
+        Student student1 = studentOptional1.get();
+        Student student2 = studentOptional2.get();
+
+        Course course1 = courseRepository.findById(1L).get();
+        Course course2 = courseRepository.findById(2L).get();
+        student1.setCourses(Set.of(course1, course2));
+        student2.setCourses(Set.of(course1));
+        studentRepository.saveAll(Set.of(student1, student2));
+
+        System.out.println(student1);
+        System.out.println(student2);
+    }
+
     public void manyToMany(){
         Student student1 = Student.builder().name("Jano").lastname("Prado").build();
         Student student2 = Student.builder().name("Erba").lastname("Alanoca").build();

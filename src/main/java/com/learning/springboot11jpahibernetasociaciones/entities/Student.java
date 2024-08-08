@@ -24,5 +24,9 @@ public class Student {
     private String lastname;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "tbl_alumnos_cursos", joinColumns = @JoinColumn(name = "alumno_id"),
+            inverseJoinColumns = @JoinColumn(name="curso_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"alumno_id", "curso_id"})
+    )
     private Set<Course> courses = new HashSet<>();
 }
