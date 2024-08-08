@@ -1,22 +1,17 @@
 package com.learning.springboot11jpahibernetasociaciones;
 
-import com.learning.springboot11jpahibernetasociaciones.entities.Address;
-import com.learning.springboot11jpahibernetasociaciones.entities.Client;
-import com.learning.springboot11jpahibernetasociaciones.entities.ClientDetails;
-import com.learning.springboot11jpahibernetasociaciones.entities.Invoice;
+import com.learning.springboot11jpahibernetasociaciones.entities.*;
 import com.learning.springboot11jpahibernetasociaciones.repositories.ClientDetailsRepository;
 import com.learning.springboot11jpahibernetasociaciones.repositories.ClientRepository;
 import com.learning.springboot11jpahibernetasociaciones.repositories.InvoiceRepository;
+import com.learning.springboot11jpahibernetasociaciones.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @SpringBootApplication
 public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLineRunner {
@@ -25,9 +20,10 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
     private ClientRepository clientRepository;
     @Autowired
     private InvoiceRepository invoiceRepository;
-
     @Autowired
     private ClientDetailsRepository clientDetailsRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBoot11JpaHibernetAsociacionesApplication.class, args);
@@ -35,7 +31,21 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        oneToOneBidirectionalFindById();
+        manyToMany();
+    }
+
+    @Transactional
+    public void manyToMany(){
+        Student student1 = Student.builder().name("Jano").lastname("Prado").build();
+        Student student2 = Student.builder().name("Erba").lastname("Alanoca").build();
+        Course course1 = Course.builder().name("Java Master").instructor("Andres").build();
+        Course course2 = Course.builder().name("Dockers").instructor("Carlos").build();
+        student1.setCourses(Set.of(course1, course2));
+        student2.setCourses(Set.of(course1));
+        studentRepository.saveAll(Set.of(student1, student2));
+
+        System.out.println(student1);
+        System.out.println(student2);
     }
 
     @Transactional
