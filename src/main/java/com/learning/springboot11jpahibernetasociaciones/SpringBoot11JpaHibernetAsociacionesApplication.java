@@ -35,7 +35,27 @@ public class SpringBoot11JpaHibernetAsociacionesApplication implements CommandLi
 
     @Override
     public void run(String... args) throws Exception {
-        oneToOneFindById();
+        oneToOneBidirectionalFindById();
+    }
+
+    @Transactional
+    public void oneToOneBidirectionalFindById(){
+        Optional<Client> clientOptional = clientRepository.findById(2L);
+        clientOptional.ifPresent(client -> {
+            ClientDetails clientDetails = ClientDetails.builder().premium(true).points(1200).build();
+            client.setClientDetails(clientDetails);
+            clientRepository.save(client);
+            System.out.println(client);
+        });
+    }
+    @Transactional
+    public void oneToOneBidirectional(){
+        Client client = Client.builder().name("Erba").lastname("Pura").build();
+        ClientDetails clientDetails = ClientDetails.builder().premium(true).points(1200).build();
+        client.setClientDetails(clientDetails);
+
+        clientRepository.save(client);
+        System.out.println(client);
     }
 
     @Transactional

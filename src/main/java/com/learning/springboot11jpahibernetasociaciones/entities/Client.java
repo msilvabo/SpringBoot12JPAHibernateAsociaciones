@@ -36,8 +36,7 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private List<Invoice> invoices = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente_detalle")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private ClientDetails clientDetails;
 
     public List<Invoice> getInvoices() {
@@ -65,5 +64,14 @@ public class Client {
     public void removeInvoice(Invoice invoice) {
         this.getInvoices().remove(invoice);
         invoice.setClient(null);
+    }
+
+    public void setClientDetails(ClientDetails clientDetails) {
+        this.clientDetails = clientDetails;
+        clientDetails.setClient(this);
+    }
+    public void removeClientDetails(ClientDetails clientDetails) {
+        clientDetails.setClient(null);
+        this.clientDetails = null;
     }
 }

@@ -19,5 +19,16 @@ public class ClientDetails {
     private boolean premium;
     private int points;
 
+    @OneToOne
+    @JoinColumn(name = "id_cliente")
+    private Client client;
 
+    @Override
+    public String toString() {
+        return "ClientDetails{" +
+                "Id=" + Id +
+                ", premium=" + premium +
+                ", points=" + points +
+                '}';
+    }
 }
